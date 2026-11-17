@@ -5,7 +5,6 @@ name: Catalog
 # changed, a bot opens a pull request labelled catalog-bot and merges it (main requires pull requests, so a workflow
 # cannot push there). No loop: pull requests and pushes made with the built-in token start no workflow, and if one
 # ever did (a different token), the regenerated file would be identical and no pull request would be opened.
-# Servers on 0.2.32 still read the `catalog` branch, so it is published as well until they are gone.
 on:
   pull_request:
   push:
@@ -77,24 +76,12 @@ jobs:
           git switch -q --detach "$GITHUB_SHA"
           gh pr merge "$number" --squash --delete-branch
           echo "VERIFY_REF=$(gh pr view "$number" --json mergeCommit -q .mergeCommit.oid)" >> "$GITHUB_ENV"
-      - name: Publish to the catalog branch for servers on 0.2.32 (main)
+      - name: Verify main holds the generated catalog (main)
         if: github.event_name == 'push'
         run: |
-          mkdir "$RUNNER_TEMP/catalog"
-          cp "$RUNNER_TEMP/catalog.json" "$RUNNER_TEMP/catalog/catalog.json"
-          cd "$RUNNER_TEMP/catalog"
-          git init -q -b catalog
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add catalog.json
-          git commit -q -m "catalog.json generated from ${GITHUB_SHA}"
-          git push -q --force "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" catalog
-      - name: Verify main and the catalog branch hold the generated catalog (main)
-        if: github.event_name == 'push'
-        run: |
-          git fetch -q origin main catalog
+          git fetch -q origin main
           # main is checked at this run's own commit (or its bot merge), so a later merge cannot fail this run.
-          for ref in "$VERIFY_REF" origin/catalog; do
+          for ref in "$VERIFY_REF"; do
             git show "$ref:catalog.json" > "$RUNNER_TEMP/published.json"
             python tools/generate_catalog.py --check "$RUNNER_TEMP/published.json"
           done

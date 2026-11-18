@@ -46,6 +46,30 @@ node --test "test/*.test.mjs"
 
 They cover the maths, camera, viewport and terrain; clicks and sounds; and the generator, which must build exactly the islands in `test/golden.json` (fingerprints of 24 seeds). If you change the layout on purpose, re-take those fingerprints (the function is in `island.test.mjs`).
 
+## Run it on its own
+
+It is a plain Node.js server and does not need Automaton. Run it from a copy of this folder (``server.js` and `public/``):
+
+```yaml
+services:
+  harbour:
+    image: node:22-bookworm-slim
+    user: "1000:1000"
+    working_dir: /app
+    command: node server.js
+    ports: ["8080:8080"]
+    volumes:
+      - ./:/app:ro
+```
+
+Environment variables (it declares no settings or secrets in `automaton.json`):
+
+| Variable | What it does |
+| --- | --- |
+| `AUTOMATON_PORT` | Port to listen on (default 8080; `PORT` also works). |
+
+No volume is needed: nothing is stored on the server (your choices are saved in the browser). Put it behind HTTPS if it is reachable from the internet.
+
 ## Run locally
 
 ```bash

@@ -48,7 +48,7 @@ They cover the maths, camera, viewport and terrain; clicks and sounds; and the g
 
 ## Run it on its own
 
-It is a plain Node.js server and does not need Automaton. Run it from a copy of this folder (``server.js` and `public/``):
+It is a plain Node.js server and does not need Automaton. Run it from a copy of this folder (`server.js` and `public/`):
 
 ```yaml
 services:
@@ -66,7 +66,7 @@ Environment variables (it declares no settings or secrets in `automaton.json`):
 
 | Variable | What it does |
 | --- | --- |
-| `AUTOMATON_PORT` | Port to listen on (default 8080; `PORT` also works). |
+| `AUTOMATON_PORT` | Port to listen on (default 8080; `PORT` also works). Change the `ports:` mapping to match. |
 
 No volume is needed: nothing is stored on the server (your choices are saved in the browser). Put it behind HTTPS if it is reachable from the internet.
 

@@ -23,7 +23,7 @@ A game of 5 words takes about 10 minutes. The host creates a room (optionally wi
 
 ## Run it on its own
 
-It is a plain Node.js server and does not need Automaton. Run it from a copy of this folder (``server.js`, `game.js`, `words.js`, `farewell.js` and `public/``):
+It is a plain Node.js server and does not need Automaton. Run it from a copy of this folder (`server.js`, `game.js`, `words.js`, `farewell.js` and `public/`):
 
 ```yaml
 services:
@@ -37,11 +37,12 @@ services:
       - ./:/app:ro
 ```
 
-Environment variables (it declares no settings or secrets in `automaton.json`):
+Environment variables (none are declared in `automaton.json`):
 
 | Variable | What it does |
 | --- | --- |
-| `AUTOMATON_PORT` | Port to listen on (default 8080; `PORT` also works). |
+| `AUTOMATON_PORT` | Port to listen on (default 8080; `PORT` also works). Change the `ports:` mapping to match. |
+| `FAREWELL_DATES` | Optional. Comma-separated dates (`YYYY-MM-DD`) on which the farewell message shows (default `2026-10-29,2026-10-30`). |
 
 No volume is needed: rooms live in memory, so a restart ends the games in progress. Put it behind HTTPS if it is reachable from the internet.
 

@@ -23,4 +23,6 @@ jobs:
       - name: Every app has a valid automaton.json
         run: python tools/check_manifests.py
       - name: Actions are pinned to commit SHAs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: python .agents/tools/check-action-pins.py

@@ -8,6 +8,8 @@ permissions:
 
 jobs:
   dependency-review:
+    # Needs the dependency graph (Settings > Security). The owner enables it, then sets the repo variable DEPENDENCY_GRAPH=true.
+    if: vars.DEPENDENCY_GRAPH == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
